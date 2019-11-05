@@ -20,7 +20,7 @@ public class Main {
 				MyArithmeticExpressionInterpreter interpreter = new MyArithmeticExpressionInterpreter(scanner);
 				try{
 					int result = interpreter.parseExp();
-					System.out.println(interpreter.getOptimizedString() + " = " + result);
+					System.out.println(interpreter.getOptimizedString() + "=" + result);
 				}catch (IllegalArgumentException e) {
 					System.out.println("Syntax error: " + e.getMessage());
 				}catch(EmptyLineException e){

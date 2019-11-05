@@ -12,7 +12,6 @@ public class ScannerWithoutDelimiter implements MyScanner{
 	 * Constructs a ScannerWithoutDelimiter for the String 'str'
 	 * @param str A String to be parsed
 	 */
-	
 	public ScannerWithoutDelimiter(String str) {
 		this.str=str;
 	}
@@ -27,8 +26,9 @@ public class ScannerWithoutDelimiter implements MyScanner{
 	public MyToken getNextToken() {
 		if(index>=str.length()&&startIndex==index)
 			return null;
-		if(index==str.length()&&startIndex!=index)
+		if(index==str.length()&&startIndex!=index) {
 			return new MyToken(str.substring(startIndex,index));
+		}
 		try {
 			Integer.parseInt(""+str.charAt(index));
 		}catch (NumberFormatException e) {
@@ -54,9 +54,6 @@ public class ScannerWithoutDelimiter implements MyScanner{
 		index++;
 		return getNextToken();
 	}
-	
-	
-	
-	
+
 	
 }

@@ -9,6 +9,7 @@ public class MyArithmeticExpressionInterpreter {
 	private MyToken currentToken;
 	
 	private int count = 0;
+	
 	private String optimizedString = "";
 	
 	
@@ -31,19 +32,13 @@ public class MyArithmeticExpressionInterpreter {
 		System.out.println("LEVEL 3 - EXP: Invoco level 2 - TERM, currentToken="+ currentToken);
 		int t1 = parseTerm();
 		while(currentToken!=null) {
-			if(currentToken.equals("+")) {
+			if(currentToken.equals("+") || currentToken.equals("-")) {
 				optimize();
-				System.out.println("LEVEL 3 - EXP: Current token '+'");
+				String op=currentToken.toString();
+				System.out.println("LEVEL 3 - EXP: Current token '" + currentToken +"'");
 				currentToken = scanner.getNextToken();
 				int t2 = parseTerm();
-				t1 = t1 + t2;
-			}
-			else if(currentToken.equals("-")) {
-				optimize();
-				System.out.println("LEVEL 3 - EXP: Current token '-'");
-				currentToken = scanner.getNextToken();
-				int t2 = parseTerm();
-				t1 = t1- t2;
+				t1 = calculate(t1,t2,op);
 			}
 			else return t1;
 		}
@@ -55,25 +50,19 @@ public class MyArithmeticExpressionInterpreter {
 		System.out.println("LEVEL 2 - TERM: Invoco level 3 - FACTOR, currentToken="+ currentToken);
 		int f1 = parseFactor();
 		while(currentToken!=null) {
-			if(currentToken.equals("*")) {
+			if(currentToken.equals("*") || currentToken.equals(":")) {
 				optimize();
-				System.out.println("LEVEL 2 - TERM: Current token '*'");
+				String op=currentToken.toString();
+				System.out.println("LEVEL 2 - TERM: Current token '" + currentToken + "'");
 				currentToken = scanner.getNextToken();
 				int f2 = parseFactor();
-				f1 = f1 * f2;
-			}
-			else if(currentToken.equals(":")) {
-				optimize();
-				System.out.println("LEVEL 2 - TERM: Current token ':'");
-				currentToken = scanner.getNextToken();
-				int f2 = parseFactor();
-				f1 = f1 / f2;
+				f1 = calculate(f1,f2,op);
 			}
 			else return f1;
 		}
 		return f1;
 	}
-	
+
 	private int parseFactor() throws EmptyLineException {
 		if(currentToken!=null && currentToken.equals("(")) {
 			optimize();
@@ -100,8 +89,20 @@ public class MyArithmeticExpressionInterpreter {
 			throw new EmptyLineException();
 		else throw new IllegalArgumentException(currentToken != null ? ("Unexpected '" + currentToken +"' at token n° " + (count+1)) : ("Missing token after token n° " + count));
 	}
-	
 
+
+	private int calculate(int first, int second,String op) {
+		if(op.equals("+"))
+			return first+second;
+		else if( op.equals("-"))
+			return first-second;
+		else if( op.equals("*"))
+			return first*second;
+		else if(op.equals(":"))
+			return first/second;
+		else throw new IllegalArgumentException("Op error");
+	}
+	
 	private void optimize() {
 		count++;
 		optimizedString+=currentToken;
